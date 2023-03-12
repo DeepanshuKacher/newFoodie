@@ -21,9 +21,10 @@ export const connectMqtt = ({
   tableNumber: number;
 }) => {
   const client = mqtt.connect({
-    hostname: "wss://mqtt.eatrofoods.com",
+    hostname: "mqtt.eatrofoods.com",
     port: 8883,
     clientId: sessionUUID,
+    protocol: "wss",
   });
 
   client.on("connect", () => {
