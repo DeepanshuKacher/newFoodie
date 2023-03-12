@@ -1,7 +1,7 @@
 import { CartNav } from "../../../components/SummaryCartNav";
 import { useAppDispatch, useAppSelector } from "../../../useFullItems/redux";
 import { Order } from "../../../interfaces";
-import { NewOrderDiv } from "./components/OrderDiv";
+import { NewOrderDiv } from "../../../components/pageComponents/cart/OrderDiv";
 import { calculatePrice } from "../../../useFullItems/functions";
 import { useEffect, useState } from "react";
 import {
@@ -14,34 +14,28 @@ import {
   hideLoader,
   showLoader,
 } from "../../../useFullItems/redux/globalLoader";
+import { fetchCartOrderAndStore } from "../../../useFullItems/functions/onload/itemsFetch/cartOrder";
 
 function Cart() {
   const dispatch = useAppDispatch();
 
-  const [cartItems, setCartItems] = useState<Order[]>([]);
   const { sessionUUID, tableNumber, tableSectionId } = useAppSelector(
     (store) => store.foodieInfo
   );
 
+  const cartItems = useAppSelector((store) => store.cartOrderContainer.orders);
+
   const { allDisheshs } = useAppSelector((store) => store.restaurantInfo);
 
-  // const cartItems = fetchItem<Order>("cart", sessionUUID);
-
   useEffect(() => {
-    fetchCartOrders();
-  }, []);
-
-  const fetchCartOrders = () => {
     dispatch(showLoader());
-    axiosGetFunction({
-      parentUrl: controllerUrls.cart,
-      childUrl: sessionUUID,
-      thenFunction: (data: any) => {
-        setCartItems(data);
-        dispatch(hideLoader());
-      },
-    });
-  };
+    // this is here because foodie mqtt is not connected to cart order
+    (async () => {
+      if (sessionUUID) await fetchCartOrderAndStore(sessionUUID);
+
+      dispatch(hideLoader());
+    })();
+  }, []);
 
   const deleteCartItem = (item: Order) => {
     dispatch(showLoader());
@@ -51,7 +45,10 @@ function Cart() {
         tableSessionId: sessionUUID,
         cartOrder: [item.orderId],
       },
-      thenFunction: fetchCartOrders,
+      thenFunction: async () => {
+        if (sessionUUID) await fetchCartOrderAndStore(sessionUUID);
+        dispatch(hideLoader());
+      },
     });
   };
 
@@ -66,7 +63,10 @@ function Cart() {
         tableNumber: tableNumber,
         tableSectionId: tableSectionId,
       },
-      thenFunction: fetchCartOrders,
+      thenFunction: async () => {
+        if (sessionUUID) await fetchCartOrderAndStore(sessionUUID);
+        dispatch(hideLoader());
+      },
     });
   };
 

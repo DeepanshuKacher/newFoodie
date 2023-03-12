@@ -4,8 +4,11 @@ import { axiosGetFunction } from "../../axios";
 import { store } from "../../redux";
 import { loadDishesh, loadRestaurantInfo } from "../../redux/restaurantInfo";
 import { createSession, loadFoodieInfo } from "../../redux/foodieInfo";
+import { connectMqtt } from "../../mqtt/initialLoad";
+import * as mqtt from "mqtt";
+import { itemsFetch } from "./itemsFetch";
 
-export const fetchAndStoreJWT = async () => {
+export const initialFetch = async () => {
   const responseData: {
     jwtToken: string;
     selfInfo: {
@@ -16,6 +19,7 @@ export const fetchAndStoreJWT = async () => {
     data: {
       dishesh: Dish[];
       dishSection: DishSections[];
+      id: string;
     };
   } = await axiosGetFunction({
     parentUrl: "foodie",
@@ -24,9 +28,15 @@ export const fetchAndStoreJWT = async () => {
     },
   });
 
+  const { data, jwtToken, selfInfo } = responseData;
+  const { sessionId, tableNumber, tableSectionId } = selfInfo;
+  const { dishSection, dishesh, id } = data;
+
   axios.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${responseData.jwtToken}`;
+
+  await itemsFetch({ sessionUUID: sessionId });
 
   store.dispatch(
     loadFoodieInfo({
@@ -40,6 +50,7 @@ export const fetchAndStoreJWT = async () => {
     loadRestaurantInfo({
       allDisheshs: responseData.data.dishesh,
       dishSections: responseData.data.dishSection,
+      restaurantId: responseData.data.id,
     })
   );
 };

@@ -4,9 +4,18 @@ import restaurantInfo from "./restaurantInfo";
 import foodieInfo from "./foodieInfo";
 import selectedItems from "./selectedItems";
 import globalLoader from "./globalLoader";
+import orderContainer from "../../pages/orders/summary/redux/orders";
+import cartOrderContainer from "../../pages/orders/cart/redux/cartOrderContainer";
 
 export const store = configureStore({
-  reducer: { restaurantInfo, foodieInfo, selectedItems, globalLoader },
+  reducer: {
+    restaurantInfo,
+    foodieInfo,
+    selectedItems,
+    globalLoader,
+    orderContainer,
+    cartOrderContainer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

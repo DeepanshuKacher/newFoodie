@@ -5,11 +5,13 @@ import { Dish, DishSections } from "../../interfaces";
 interface RestaurantInfo {
   allDisheshs: Dish[];
   dishSections: DishSections[];
+  restaurantId: string | undefined;
 }
 
 const initialState: RestaurantInfo = {
   allDisheshs: [],
   dishSections: [],
+  restaurantId: undefined,
 };
 
 const restaurantInfo = createSlice({
@@ -24,9 +26,10 @@ const restaurantInfo = createSlice({
       state.dishSections = action.payload;
     },
     loadRestaurantInfo: (state, action: PayloadAction<RestaurantInfo>) => {
-      const { allDisheshs, dishSections } = action.payload;
+      const { allDisheshs, dishSections, restaurantId } = action.payload;
       state.allDisheshs = allDisheshs;
       state.dishSections = dishSections;
+      state.restaurantId = restaurantId;
     },
   },
 });

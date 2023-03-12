@@ -1,9 +1,6 @@
 import { Dish, Order } from "../../../interfaces";
-import { ui_constants } from "../../../useFullItems/constants";
-import {
-  calculatePrice,
-  getRandamValue,
-} from "../../../useFullItems/functions";
+import { calculatePrice } from "../../../useFullItems/functions";
+
 
 interface Props {
   order: Order;
@@ -14,20 +11,29 @@ interface Props {
 
 const OrderDiv = (props: Props) => {
   const { order, dish, backgroundColor } = props;
-  const colors = {
+  const orderPositionStatus = {
     queue: {
       border: "border-red-500",
       text: "text-red-500",
+      status: "Queue",
     },
     preparing: {
       border: "border-orange-500",
       text: "text-orange-500",
+      status: "Preparing",
     },
     completed: {
       border: "border-green-500",
       text: "text-green-500",
+      status: "Prepared",
     },
   };
+  const orderPosition =
+    order.chefAssign && order.completed
+      ? "completed"
+      : order.chefAssign && !order.completed
+      ? "preparing"
+      : "queue";
   return (
     <div className={`border p-2 rounded-md ${backgroundColor}`}>
       <div className="flex items-start justify-between">
@@ -35,9 +41,9 @@ const OrderDiv = (props: Props) => {
           {dish.name}
         </h1>
         <h1
-          className={`border-2 ${colors.queue.border} ${colors.queue.text} bg-white text-xl rounded-md px-1`}
+          className={`border-2 ${orderPositionStatus[orderPosition].border} ${orderPositionStatus[orderPosition].text} bg-white text-xl rounded-md px-1`}
         >
-          Queue
+          {orderPositionStatus[orderPosition].status}
         </h1>
       </div>
       <br />

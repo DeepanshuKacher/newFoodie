@@ -1,4 +1,4 @@
-export interface Dish {
+interface Dish {
   id: string;
   name: string;
   description: string;
@@ -13,18 +13,18 @@ export interface Dish {
   available: boolean;
 }
 
-export interface DishSections {
+interface DishSections {
   dishesh: Dish[];
   sectionName: string;
 }
 
-export interface PriceStructure {
+interface PriceStructure {
   Large?: { full?: number; half?: number };
   Medium?: { full?: number; half?: number };
   Small?: { full?: number; half?: number };
 }
 
-export interface Order {
+interface Order {
   dishId: string;
   orderId: string;
   tableNumber: number;
@@ -38,3 +38,5 @@ export interface Order {
   completed?: string;
   createdAt: string;
 }
+
+export type { Dish, DishSections, PriceStructure, Order };

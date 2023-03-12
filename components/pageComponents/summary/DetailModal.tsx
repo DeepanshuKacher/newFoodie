@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { faker } from "@faker-js/faker";
+import { useState } from "react";
 // import { ButtonFill } from "../common_components";
 
 interface Props {
@@ -8,22 +7,6 @@ interface Props {
 }
 
 function DetailModal({ handleModal, showModal }: Props) {
-  const [fakeItem, setfakeItem] = useState([
-    { itemName: "extra-cheese", price: 10 },
-  ]);
-
-  // useEffect(() => {
-  //   const temp = [{ itemName: "extra-cheese", price: 10 }];
-  //   for (let index = 1; index <= 5; index++) {
-  //     temp.push({ itemName: faker.animal.cat(), price: index * 10 });
-  //   }
-  //   setfakeItem(temp);
-  // }, []);
-
-  const deleteFunction = () => {
-    handleModal(false);
-  };
-
   const showClose = {
     show: "flex",
     hide: "hidden",

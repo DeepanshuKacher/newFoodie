@@ -1,8 +1,5 @@
-import { faker } from "@faker-js/faker";
 import React, { useEffect, useState } from "react";
 import { CartNav } from "../../../components/SummaryCartNav";
-import { Order } from "../../../interfaces";
-import { axiosGetFunction, controllerUrls } from "../../../useFullItems/axios";
 import { ui_constants } from "../../../useFullItems/constants";
 import {
   calculatePrice,
@@ -13,32 +10,26 @@ import {
   hideLoader,
   showLoader,
 } from "../../../useFullItems/redux/globalLoader";
-import DetailModal from "./DetailModal";
-import { OrderDiv } from "./OrderDiv";
+import DetailModal from "../../../components/pageComponents/summary/DetailModal";
+import { fetchOrder } from "../../../useFullItems/functions/onload/itemsFetch/order";
+import { OrderDiv } from "../../../components/pageComponents/summary/OrderDiv";
 
 function Summary() {
   const dispatch = useAppDispatch();
   const [showDetailModal, setShowDetailModal] = useState(false);
-  const [orders, setOrders] = useState<Order[]>([]);
   const toggleDetailModal = () => setShowDetailModal(!showDetailModal);
   const { sessionUUID } = useAppSelector((store) => store.foodieInfo);
   const { allDisheshs } = useAppSelector((store) => store.restaurantInfo);
+  const orders = useAppSelector((store) => store.orderContainer.orders);
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
-
-  const fetchOrders = () => {
     dispatch(showLoader());
-    axiosGetFunction({
-      parentUrl: controllerUrls.sessions,
-      childUrl: sessionUUID,
-      thenFunction: (data: Order[]) => {
-        setOrders(data);
-        dispatch(hideLoader());
-      },
-    });
-  };
+
+    (async () => {
+      if (sessionUUID) await fetchOrder(sessionUUID);
+      dispatch(hideLoader());
+    })();
+  }, []);
 
   const totalPrice = () => {
     let totalPrice = 0;

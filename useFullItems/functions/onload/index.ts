@@ -1,8 +1,11 @@
-import { fetchAndStoreJWT } from "./fetchAndStoreJWT";
+import { MqttClient } from "mqtt";
+import { initialFetch } from "./initialFetch";
 
-export const onLoad = async (setLoaderFalse: () => void) => {
+export const onLoad = async (
+  setLoaderFalse: () => void,
+) => {
   try {
-    await fetchAndStoreJWT();
+    await initialFetch();
 
     setLoaderFalse();
   } catch (error) {

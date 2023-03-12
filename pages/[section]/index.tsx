@@ -5,7 +5,7 @@ import CommonCard from "../../components/CommonCard";
 import DishModal from "../../components/DishModal";
 import { Dish } from "../../interfaces";
 import { useAppSelector } from "../../useFullItems/redux";
-import { Header } from "./components/Header";
+import { Header } from "../../components/pageComponents/section/Header";
 
 export default function AllDish() {
   /* initialization */

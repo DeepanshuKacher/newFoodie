@@ -1,9 +1,9 @@
-import { Dish, Order } from "../../../../interfaces";
-import { ui_constants } from "../../../../useFullItems/constants";
+import type { Dish, Order } from "../../../interfaces";
+import { ui_constants } from "../../../useFullItems/constants";
 import {
   calculatePrice,
   getRandamValue,
-} from "../../../../useFullItems/functions";
+} from "../../../useFullItems/functions";
 
 interface Props {
   dish: Dish;

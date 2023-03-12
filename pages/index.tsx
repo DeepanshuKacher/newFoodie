@@ -5,6 +5,8 @@ import Head from "next/head";
 import Footer from "../components/Footer";
 import { store, useAppDispatch, useAppSelector } from "../useFullItems/redux";
 import { selectSection } from "../useFullItems/redux/selectedItems";
+import { connectMqtt } from "../useFullItems/mqtt/initialLoad";
+import { useEffect } from "react";
 
 export default function Home() {
   /* initialization */
@@ -13,7 +15,14 @@ export default function Home() {
   const { allDisheshs, dishSections } = useAppSelector(
     (store) => store.restaurantInfo
   );
+  const { sessionUUID, tableNumber, tableSectionId } = useAppSelector(
+    (store) => store.foodieInfo
+  );
+
+  const { restaurantId } = useAppSelector((store) => store.restaurantInfo);
   /* useEffect */
+
+
   /* function */
 
   return (

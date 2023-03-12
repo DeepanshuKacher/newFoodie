@@ -97,7 +97,11 @@ function DishModal(props: Props) {
         <div aria-label="upper div" className="flex gap-x-1">
           <img
             className="w-1/2 object-cover rounded-md"
-            src="/images/default_food.jpg"
+            src={
+              dishDetail?.imageUrl
+                ? dishDetail?.imageUrl
+                : "/images/default_food.jpg"
+            }
             alt="food image"
           />
           <div className="flex-1 items-center flex flex-col">
