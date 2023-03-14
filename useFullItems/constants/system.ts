@@ -3,15 +3,10 @@ const ENVIORNMENT = {
   PRODUCTION: "PRODUCTION",
 } as const;
 
-const currentEnviornmentENV = process.env.ENVIORNMENT;
+const currentEnviornment = process.env.ENVIORNMENT;
 
-const currentEnviornment: typeof ENVIORNMENT[keyof typeof ENVIORNMENT] =
-  ENVIORNMENT.DEVELOPMENT;
-
-const IS_DEVELOPMENT = false,
+const IS_DEVELOPMENT = ENVIORNMENT.DEVELOPMENT === currentEnviornment,
   IS_PRODUCTION = !IS_DEVELOPMENT;
-
-console.log(currentEnviornmentENV, "inside constants");
 
 export const constants = {
   IS_DEVELOPMENT,

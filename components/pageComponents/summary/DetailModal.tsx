@@ -24,12 +24,12 @@ function DetailModal({ handleModal, showModal }: Props) {
         <div aria-label="upper div">
           <img
             className=" sm:hidden object-cover rounded-md"
-            src="/temp/burger.jpg"
+            src="/images/default_food.jpg"
             alt="food image"
           />
           <img
             className=" hidden sm:block w-1/2 object-cover rounded-md"
-            src="/temp/burger.jpg"
+            src="/images/default_food.jpg"
             alt="food image"
           />
         </div>
