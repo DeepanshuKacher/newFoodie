@@ -88,7 +88,16 @@ function DishModal(props: Props) {
     if (foodPrice[size]?.[halfOrFull]) {
       if (halfOrFull === "full") setFullQuantity(quantity);
       else if (halfOrFull === "half") setHalfQuantity(quantity);
+    } else {
+      alert(`${halfOrFull} quantity not available`);
     }
+  };
+
+  const selectSize = (size: keyof PriceStructure) => {
+    if (!foodPrice[size]) return alert(`${size} size is not available`);
+    setSize(size);
+    setHalfQuantity(undefined);
+    setFullQuantity(undefined);
   };
 
   return (
@@ -118,8 +127,8 @@ function DishModal(props: Props) {
             <h4 className="font-semibold">Size</h4>
             <div className="flex flex-row space-x-2">
               <button
-                onClick={() => setSize("Large")}
-                disabled={!foodPrice.Large}
+                onClick={() => selectSize("Large")}
+                // disabled={!foodPrice.Large}
                 className={`px-2 border rounded-md ${
                   size === "Large"
                     ? quantitySelect.select
@@ -129,9 +138,9 @@ function DishModal(props: Props) {
                 Large
               </button>
               <button
-                onClick={() => setSize("Medium")}
+                onClick={() => selectSize("Medium")}
                 value="Medium"
-                disabled={!foodPrice.Medium}
+                // disabled={!foodPrice.Medium}
                 className={`px-2 border rounded-md ${
                   size === "Medium"
                     ? quantitySelect.select
@@ -141,9 +150,9 @@ function DishModal(props: Props) {
                 Medium
               </button>
               <button
-                onClick={() => setSize("Small")}
+                onClick={() => selectSize("Small")}
                 value="Small"
-                disabled={!foodPrice.Small}
+                // disabled={!foodPrice.Small}
                 className={`px-2 border rounded-md ${
                   size === "Small"
                     ? quantitySelect.select
