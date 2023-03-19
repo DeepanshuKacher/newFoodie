@@ -29,13 +29,14 @@ export const connectMqtt = ({
 
   client.on("connect", () => {
     console.log("mqtt connected");
+    alert("mqtt connected");
     client.subscribe(
       `${restaurantId}/order/${tableSectionId}/${tableNumber}`,
       { qos: 0 },
       (error) => {
         if (error) {
           console.log("mqtt connection error");
-          // alert("Please restart app");
+          alert("Please restart app");
         }
       }
     );
@@ -43,14 +44,17 @@ export const connectMqtt = ({
 
   client.on("reconnect", () => {
     console.log("reconnecting");
+    alert("mqtt reconnecting");
   });
 
   client.on("error", () => {
     console.log("some mqtt error");
+    alert("mqtt error");
   });
 
   client.on("end", () => {
     console.log("mqtt connection end");
+    alert("mqtt connection end");
   });
 
   client.on("message", (topic, message) => {
