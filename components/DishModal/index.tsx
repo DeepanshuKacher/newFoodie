@@ -83,11 +83,22 @@ function DishModal(props: Props) {
     });
   };
 
+  const toggleQuantity = (halfOrFull: "half" | "full", quantity: number) => {
+    if (halfOrFull === "full") {
+      if (fullQuantity === quantity) setFullQuantity(undefined);
+      else setFullQuantity(quantity);
+    } else if (halfOrFull === "half") {
+      if (halfQuantity === quantity) setHalfQuantity(undefined);
+      else setHalfQuantity(quantity);
+    }
+  };
+
   const selectQuantity = (halfOrFull: "half" | "full", quantity: number) => {
     if (!size) return alert("Please Select Size");
     if (foodPrice[size]?.[halfOrFull]) {
-      if (halfOrFull === "full") setFullQuantity(quantity);
-      else if (halfOrFull === "half") setHalfQuantity(quantity);
+      // if (halfOrFull === "full") setFullQuantity(quantity);
+      // else if (halfOrFull === "half") setHalfQuantity(quantity);
+      toggleQuantity(halfOrFull, quantity);
     } else {
       alert(`${halfOrFull} quantity not available`);
     }
@@ -215,7 +226,7 @@ function DishModal(props: Props) {
                   } w-20 text-center rounded-lg outline-none`}
                   type="number"
                   placeholder="custom"
-                  value={halfQuantity! > 4 ? halfQuantity : ""}
+                  value={halfQuantity! > 0 ? halfQuantity : ""}
                   onChange={(e) => {
                     const intvalue = parseInt(e.target.value);
                     if (typeof intvalue === "number")
@@ -275,7 +286,7 @@ function DishModal(props: Props) {
                   } w-20 text-center rounded-lg outline-none`}
                   type="number"
                   placeholder="custom"
-                  value={fullQuantity! > 4 ? fullQuantity : ""}
+                  value={fullQuantity! > 0 ? fullQuantity : ""}
                   onChange={(e) => {
                     const intvalue = parseInt(e.target.value);
                     if (typeof intvalue === "number")

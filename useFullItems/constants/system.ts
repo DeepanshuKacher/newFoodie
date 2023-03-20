@@ -11,10 +11,9 @@ const IS_DEVELOPMENT = ENVIORNMENT.DEVELOPMENT === currentEnviornment,
 export const constants = {
   IS_DEVELOPMENT,
   IS_PRODUCTION,
-  BACKEND_URL:
-    /*  IS_DEVELOPMENT
-    ? "http://192.168.202.14:5000/"
-    : */ "https://api.eatrofoods.com/",
+  BACKEND_URL: IS_DEVELOPMENT
+    ? "http://192.168.72.14:5000/"
+    : "https://api.eatrofoods.com/",
 
   mqttTopicString: (
     restaurantId: string,
