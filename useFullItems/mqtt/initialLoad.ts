@@ -1,5 +1,6 @@
 import * as mqtt from "mqtt";
 import { mqttFunction } from "./functions";
+import { constants } from "../constants";
 
 // store.subscribe(() => {
 //   const { tableNumber, tableSectionId } = store.getState().foodieInfo;
@@ -25,36 +26,37 @@ export const connectMqtt = ({
     port: 8883,
     clientId: sessionUUID,
     protocol: "wss",
+    reconnectPeriod: 1000,
   });
 
   client.on("connect", () => {
-    console.log("mqtt connected");
-    alert("mqtt connected");
+    if (constants.showConsoleLogs) console.log("mqtt connected");
+    if (constants.showAlerts) alert("mqtt connected");
     client.subscribe(
       `${restaurantId}/order/${tableSectionId}/${tableNumber}`,
       { qos: 0 },
       (error) => {
         if (error) {
-          console.log("mqtt connection error");
-          alert("Please restart app");
+          if (constants.showConsoleLogs) console.log("mqtt connection error");
+          if (constants.showAlerts) alert("Please restart app");
         }
       }
     );
   });
 
   client.on("reconnect", () => {
-    console.log("reconnecting");
-    alert("mqtt reconnecting");
+    if (constants.showConsoleLogs) console.log("reconnecting");
+    if (constants.showAlerts) alert("mqtt reconnecting");
   });
 
   client.on("error", () => {
-    console.log("some mqtt error");
-    alert("mqtt error");
+    if (constants.showConsoleLogs) console.log("some mqtt error");
+    if (constants.showAlerts) alert("mqtt error");
   });
 
   client.on("end", () => {
-    console.log("mqtt connection end");
-    alert("mqtt connection end");
+    if (constants.showConsoleLogs) console.log("mqtt connection end");
+    if (constants.showAlerts) alert("mqtt connection end");
   });
 
   client.on("message", (topic, message) => {
