@@ -30,7 +30,7 @@ export default function Home() {
       <Head>
         <title>eatrofoods</title>
       </Head>
-      <header>
+      {/* <header>
         <div className="flex bg-white rounded-md">
           <img src="/icons/search.svg" alt="search icon" className="h-9" />
           <input
@@ -39,7 +39,7 @@ export default function Home() {
             placeholder="search your desired foods"
           />
         </div>
-      </header>
+      </header> */}
       <section>
         <div className="flex justify-between">
           <h3 className="text-xl font-bold">Popular items</h3>

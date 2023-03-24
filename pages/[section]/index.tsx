@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /* import pages/components */
 import CommonCard from "../../components/CommonCard";
@@ -12,17 +12,26 @@ export default function AllDish() {
   /* states or store */
 
   const [selectedDish, setSelectDish] = useState<Dish>();
+  const [allDish, setAllDish] = useState<Dish[]>([]);
+  const [dishSearchText, setDishSearchText] = useState("");
 
   const { allDisheshs, dishSections } = useAppSelector(
     (store) => store.restaurantInfo
   );
 
   const { selectedSection } = useAppSelector((store) => store.selectedItems);
-  let allDish = allDisheshs;
+  // let allDish = allDisheshs;
 
-  if (!(selectedSection === undefined))
-    allDish = dishSections?.[selectedSection]?.dishesh;
+  // allDish = dishSections?.[selectedSection]?.dishesh;
 
+  useEffect(() => {
+    if (selectedSection) {
+      const temp = dishSections?.[selectedSection]?.dishesh;
+      setAllDish(temp);
+    } else {
+      setAllDish(allDisheshs);
+    }
+  }, []);
   /* useEffect */
   /* functions and constants */
 
@@ -32,7 +41,7 @@ export default function AllDish() {
 
   return (
     <main className={`bg-gray-100 p-3 pb-16 ${!!selectedDish ? "" : spacey4}`}>
-      <Header />
+      <Header inputValue={dishSearchText} setInputValue={setDishSearchText} />
       {selectedDish && (
         <DishModal dishDetail={selectedDish} handleModal={removeSelectedDish} />
       )}
@@ -45,16 +54,20 @@ export default function AllDish() {
           </h3>
         </div>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {allDish.map((dish) => {
-            return (
-              <CommonCard
-                key={dish.id}
-                heading={dish.name}
-                handleClick={() => setSelectDish(dish)}
-                backgroundImageUrl={dish.imageUrl}
-              />
-            );
-          })}
+          {allDish
+            ?.filter((dish) =>
+              dish.name.match(new RegExp(dishSearchText, "gi"))
+            )
+            .map((dish) => {
+              return (
+                <CommonCard
+                  key={dish.id}
+                  heading={dish.name}
+                  handleClick={() => setSelectDish(dish)}
+                  backgroundImageUrl={dish.imageUrl}
+                />
+              );
+            })}
         </div>
       </section>
     </main>
