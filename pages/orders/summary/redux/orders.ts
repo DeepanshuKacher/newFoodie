@@ -4,6 +4,7 @@ import { Order } from "../../../../interfaces";
 
 interface OrderContainer {
   orders: Order[];
+  noRepeatContainer: { [orderId: Order["orderId"]]: Order };
 }
 
 type Accepted = {
@@ -13,6 +14,7 @@ type Accepted = {
 
 const initialState: OrderContainer = {
   orders: [],
+  noRepeatContainer: {},
 };
 
 const orderContainer = createSlice({
@@ -21,9 +23,27 @@ const orderContainer = createSlice({
   reducers: {
     loadOrders: (state, action: PayloadAction<Order[]>) => {
       state.orders = action.payload;
+      for (let x of state.orders) {
+        state.noRepeatContainer[x.orderId] = x;
+      }
     },
-    pushOrder: (state, action: PayloadAction<Order>) => {
-      state.orders.push(action.payload);
+    pushOrder: (
+      state,
+      action: PayloadAction<{
+        order: Order;
+        orderNo: number;
+      }>
+    ) => {
+      const { order, orderNo } = action.payload;
+      if (state.noRepeatContainer[order.orderId] === undefined)
+        state.orders.push(action.payload.order);
+
+      // const todaysDate = new Date().getDate();
+      // const totalTodaysOrder = state.orders.reduce((acc, currentValue) => {
+      //   if (new Date(currentValue.createdAt).getDate() === todaysDate)
+      //     return acc + 1;
+      //   else return acc;
+      // }, 0);
     },
     orderAccepted: (state, action: PayloadAction<Accepted>) => {
       const orders = [...state.orders];
