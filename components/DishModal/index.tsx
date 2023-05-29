@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Dish } from "../../interfaces";
 import { useAppDispatch, useAppSelector } from "../../useFullItems/redux";
 import { axiosPostFunction, controllerUrls } from "../../useFullItems/axios";
-import { foodPriceStructure } from "../../hooks/getFoodPriceStructure";
 import TableBody from "./tableBody";
 import { hideLoader, showLoader } from "../../useFullItems/redux/globalLoader";
 // import { ButtonFill } from "../common_components";
