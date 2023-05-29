@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Dish, PriceStructure } from "../../interfaces";
+import { Dish } from "../../interfaces";
 import { useAppDispatch, useAppSelector } from "../../useFullItems/redux";
 import { axiosPostFunction, controllerUrls } from "../../useFullItems/axios";
 import { foodPriceStructure } from "../../hooks/getFoodPriceStructure";
@@ -20,9 +20,7 @@ function DishModal(props: Props) {
   const [halfQuantity, setHalfQuantity] = useState<number>();
   const [fullQuantity, setFullQuantity] = useState<number>();
   const [user_description, setUserDescription] = useState("");
-  const [size, setSize] = useState<keyof PriceStructure | undefined>();
-
-  const foodPrice = foodPriceStructure(dishDetail!);
+  const [size, setSize] = useState<keyof Dish["price"]>();
 
   const { sessionUUID, tableNumber, tableSectionId } = useAppSelector(
     (store) => store.foodieInfo
@@ -35,6 +33,7 @@ function DishModal(props: Props) {
   const quantitySelect = {
     select: "bg-green-600",
     noSelected: "bg-white",
+    notExist: "bg-gray-500",
   };
 
   const orderFoor = () => {
@@ -94,21 +93,33 @@ function DishModal(props: Props) {
   };
 
   const selectQuantity = (halfOrFull: "half" | "full", quantity: number) => {
-    if (!size) return alert("Please Select Size");
-    if (foodPrice[size]?.[halfOrFull]) {
-      // if (halfOrFull === "full") setFullQuantity(quantity);
-      // else if (halfOrFull === "half") setHalfQuantity(quantity);
-      toggleQuantity(halfOrFull, quantity);
-    } else {
-      alert(`${halfOrFull} quantity not available`);
+    if (dishDetail) {
+      if (!size) return alert("Please Select Size");
+      if (dishDetail?.price?.[size]?.[halfOrFull]) {
+        // if (halfOrFull === "full") setFullQuantity(quantity);
+        // else if (halfOrFull === "half") setHalfQuantity(quantity);
+        toggleQuantity(halfOrFull, quantity);
+      } else {
+        alert(`${halfOrFull} quantity not available`);
+      }
     }
   };
 
-  const selectSize = (size: keyof PriceStructure) => {
-    if (!foodPrice[size]) return alert(`${size} size is not available`);
-    setSize(size);
-    setHalfQuantity(undefined);
-    setFullQuantity(undefined);
+  const selectSize = (size: keyof Dish["price"]) => {
+    if (dishDetail) {
+      if (!dishDetail?.["price"]?.[size])
+        return alert(`${size} size is not available`);
+      setSize(size);
+      setHalfQuantity(undefined);
+      setFullQuantity(undefined);
+    }
+  };
+
+  const returnTrueIfSizeExistForDish_inpureFunction = (
+    size: keyof Dish["price"]
+  ) => {
+    if (dishDetail?.price?.[size]) return true;
+    else return false;
   };
 
   return (
@@ -128,7 +139,7 @@ function DishModal(props: Props) {
             <h3 className="text-xl font-bold">{dishDetail?.name}</h3>
             <p className="leading-none my-1">{dishDetail?.description}</p>
             <table className="text-left min-w-full">
-              <TableBody priceStructure={foodPrice} />
+              <TableBody dish={dishDetail!} />
             </table>
           </div>
         </div>
@@ -138,36 +149,42 @@ function DishModal(props: Props) {
             <h4 className="font-semibold">Size</h4>
             <div className="flex flex-row space-x-2">
               <button
-                onClick={() => selectSize("Large")}
+                onClick={() => selectSize("large")}
                 // disabled={!foodPrice.Large}
                 className={`px-2 border rounded-md ${
-                  size === "Large"
-                    ? quantitySelect.select
-                    : quantitySelect.noSelected
+                  returnTrueIfSizeExistForDish_inpureFunction("large")
+                    ? size === "large"
+                      ? quantitySelect.select
+                      : quantitySelect.noSelected
+                    : quantitySelect.notExist
                 }`}
               >
                 Large
               </button>
               <button
-                onClick={() => selectSize("Medium")}
+                onClick={() => selectSize("medium")}
                 value="Medium"
                 // disabled={!foodPrice.Medium}
                 className={`px-2 border rounded-md ${
-                  size === "Medium"
-                    ? quantitySelect.select
-                    : quantitySelect.noSelected
+                  returnTrueIfSizeExistForDish_inpureFunction("medium")
+                    ? size === "medium"
+                      ? quantitySelect.select
+                      : quantitySelect.noSelected
+                    : quantitySelect.notExist
                 }`}
               >
                 Medium
               </button>
               <button
-                onClick={() => selectSize("Small")}
+                onClick={() => selectSize("small")}
                 value="Small"
-                // disabled={!foodPrice.Small}
+                // disabled={!returnTrueIfSizeExistForDish_inpureFunction("small")}
                 className={`px-2 border rounded-md ${
-                  size === "Small"
-                    ? quantitySelect.select
-                    : quantitySelect.noSelected
+                  returnTrueIfSizeExistForDish_inpureFunction("small")
+                    ? size === "small"
+                      ? quantitySelect.select
+                      : quantitySelect.noSelected
+                    : quantitySelect.notExist
                 }`}
               >
                 Small

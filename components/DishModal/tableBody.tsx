@@ -1,14 +1,28 @@
 import React from "react";
-import { PriceStructure } from "../../interfaces";
+import { Dish } from "../../interfaces";
+
+const tableData = (
+  dish: Dish,
+  halfFull: keyof Dish["price"]["large"],
+  size: keyof Dish["price"]
+) => {
+  if (dish?.price?.[size]?.[halfFull])
+    return <td>₹{dish.price[size][halfFull]}</td>;
+  else return <td>Nil</td>;
+};
+const tableRow = (dish: Dish, size: keyof Dish["price"]) => (
+  <tr>
+    <th>{size}</th>
+    {tableData(dish, "half", size)}
+    {tableData(dish, "full", size)}
+  </tr>
+);
 
 interface Props {
-  priceStructure: PriceStructure;
+  dish: Dish;
 }
-
 function TableBody(props: Props) {
-  const { priceStructure } = props;
-
-  const { Large, Medium, Small } = priceStructure;
+  const { dish } = props;
 
   return (
     <tbody>
@@ -17,45 +31,9 @@ function TableBody(props: Props) {
         <th>Half</th>
         <th>Full</th>
       </tr>
-      {Large ? (
-        <tr>
-          <th>Large</th>
-          <td>
-            {Large.half ? "₹" : null}
-            {Large.half || ""}
-          </td>
-          <td>
-            {Large.full ? "₹" : null}
-            {Large.full || ""}
-          </td>
-        </tr>
-      ) : null}
-      {Medium ? (
-        <tr>
-          <th>Medium</th>
-          <td>
-            {Medium.half ? "₹" : null}
-            {Medium.half || ""}
-          </td>
-          <td>
-            {Medium.full ? "₹" : null}
-            {Medium.full || ""}
-          </td>
-        </tr>
-      ) : null}
-      {Small ? (
-        <tr>
-          <th>Small</th>
-          <td>
-            {Small.half ? "₹" : null}
-            {Small.half || ""}
-          </td>
-          <td>
-            {Small.full ? "₹" : null}
-            {Small.full || ""}
-          </td>
-        </tr>
-      ) : null}
+      {tableRow(dish, "large")}
+      {tableRow(dish, "medium")}
+      {tableRow(dish, "small")}
     </tbody>
   );
 }
