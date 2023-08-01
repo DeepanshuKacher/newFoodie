@@ -33,6 +33,7 @@ function DishModal(props: Props) {
     select: "bg-green-600",
     noSelected: "bg-white",
     notExist: "bg-gray-500",
+    // notExistHalfFull: "bg-blue-600",
   };
 
   const orderFoor = () => {
@@ -121,6 +122,28 @@ function DishModal(props: Props) {
     else return false;
   };
 
+  const numbersBackgroundColor = (
+    halfOrFull: "half" | "full",
+    number: number
+  ) => {
+    if (halfOrFull === "full")
+      return size
+        ? dishDetail?.price?.[size]?.[halfOrFull]
+          ? fullQuantity === number
+            ? quantitySelect.select
+            : quantitySelect.noSelected
+          : quantitySelect.notExist
+        : quantitySelect.noSelected;
+    else if (halfOrFull === "half")
+      return size
+        ? dishDetail?.price?.[size]?.[halfOrFull]
+          ? halfQuantity === number
+            ? quantitySelect.select
+            : quantitySelect.noSelected
+          : quantitySelect.notExist
+        : quantitySelect.noSelected;
+  };
+
   return (
     <div className={`fixed inset-0 bg-[#000000b3] flex`}>
       <div className="w-full mt-4 mb-16 overflow-auto bg-red-200 rounded-2xl p-3">
@@ -196,48 +219,52 @@ function DishModal(props: Props) {
               <div className="flex space-x-2">
                 <span
                   onClick={() => selectQuantity("half", 1)}
-                  className={`${
-                    halfQuantity === 1
-                      ? quantitySelect.select
-                      : quantitySelect.noSelected
-                  } px-2 flex justify-center items-center rounded-full`}
+                  className={`${numbersBackgroundColor(
+                    "half",
+                    1
+                  )} px-2 flex justify-center items-center rounded-full`}
                 >
                   1
                 </span>
                 <span
                   onClick={() => selectQuantity("half", 2)}
-                  className={`${
-                    halfQuantity === 2
-                      ? quantitySelect.select
-                      : quantitySelect.noSelected
-                  } px-2 flex justify-center items-center rounded-full`}
+                  className={`${numbersBackgroundColor(
+                    "half",
+                    2
+                  )} px-2 flex justify-center items-center rounded-full`}
                 >
                   2
                 </span>
                 <span
                   onClick={() => selectQuantity("half", 3)}
-                  className={`${
-                    halfQuantity === 3
-                      ? quantitySelect.select
-                      : quantitySelect.noSelected
-                  } px-2 flex justify-center items-center rounded-full`}
+                  className={`${numbersBackgroundColor(
+                    "half",
+                    3
+                  )} px-2 flex justify-center items-center rounded-full`}
                 >
                   3
                 </span>
                 <span
                   onClick={() => selectQuantity("half", 4)}
-                  className={`${
-                    halfQuantity === 4
-                      ? quantitySelect.select
-                      : quantitySelect.noSelected
-                  } px-2 flex justify-center items-center rounded-full`}
+                  className={`${numbersBackgroundColor(
+                    "half",
+                    4
+                  )} px-2 flex justify-center items-center rounded-full`}
                 >
                   4
                 </span>
                 <input
                   className={`${
-                    halfQuantity! > 4
-                      ? quantitySelect.select
+                    // halfQuantity! > 4
+                    //   ? quantitySelect.select
+                    //   : quantitySelect.noSelected
+
+                    size
+                      ? dishDetail?.price?.[size]?.half
+                        ? halfQuantity! > 4
+                          ? quantitySelect.select
+                          : quantitySelect.noSelected
+                        : quantitySelect.notExist
                       : quantitySelect.noSelected
                   } w-20 text-center rounded-lg outline-none`}
                   type="number"
@@ -256,48 +283,48 @@ function DishModal(props: Props) {
               <div className="flex space-x-2">
                 <span
                   onClick={() => selectQuantity("full", 1)}
-                  className={`${
-                    fullQuantity === 1
-                      ? quantitySelect.select
-                      : quantitySelect.noSelected
-                  } px-2 flex justify-center items-center rounded-full`}
+                  className={`${numbersBackgroundColor(
+                    "full",
+                    1
+                  )} px-2 flex justify-center items-center rounded-full`}
                 >
                   1
                 </span>
                 <span
                   onClick={() => selectQuantity("full", 2)}
-                  className={`${
-                    fullQuantity === 2
-                      ? quantitySelect.select
-                      : quantitySelect.noSelected
-                  } px-2 flex justify-center items-center rounded-full`}
+                  className={`${numbersBackgroundColor(
+                    "full",
+                    2
+                  )} px-2 flex justify-center items-center rounded-full`}
                 >
                   2
                 </span>
                 <span
                   onClick={() => selectQuantity("full", 3)}
-                  className={`${
-                    fullQuantity === 3
-                      ? quantitySelect.select
-                      : quantitySelect.noSelected
-                  } px-2 flex justify-center items-center rounded-full`}
+                  className={`${numbersBackgroundColor(
+                    "full",
+                    3
+                  )} px-2 flex justify-center items-center rounded-full`}
                 >
                   3
                 </span>
                 <span
                   onClick={() => selectQuantity("full", 4)}
-                  className={`${
-                    fullQuantity === 4
-                      ? quantitySelect.select
-                      : quantitySelect.noSelected
-                  } px-2 flex justify-center items-center rounded-full`}
+                  className={`${numbersBackgroundColor(
+                    "full",
+                    4
+                  )} px-2 flex justify-center items-center rounded-full`}
                 >
                   4
                 </span>
                 <input
                   className={`${
-                    fullQuantity! > 4
-                      ? quantitySelect.select
+                    size
+                      ? dishDetail?.price?.[size]?.full
+                        ? fullQuantity! > 4
+                          ? quantitySelect.select
+                          : quantitySelect.noSelected
+                        : quantitySelect.notExist
                       : quantitySelect.noSelected
                   } w-20 text-center rounded-lg outline-none`}
                   type="number"

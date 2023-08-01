@@ -35,7 +35,7 @@ const orderContainer = createSlice({
       }>
     ) => {
       const { order, orderNo } = action.payload;
-      if (state.noRepeatContainer[order.orderId] === undefined)
+      if (state.noRepeatContainer[order?.orderId] === undefined)
         state.orders.push(action.payload.order);
 
       // const todaysDate = new Date().getDate();

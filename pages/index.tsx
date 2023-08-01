@@ -40,7 +40,7 @@ export default function Home() {
           />
         </div>
       </header> */}
-      <section>
+  {/*     <section>
         <div className="flex justify-between">
           <h3 className="text-xl font-bold">Popular items</h3>
           <a className="text-orange-500 underline">View all</a>
@@ -53,7 +53,7 @@ export default function Home() {
           <PopularCard />
           <PopularCard />
         </div>
-      </section>
+      </section> */}
       <section>
         <div className="flex justify-between">
           <h3 className="text-xl font-bold">All categories</h3>

@@ -12,7 +12,7 @@ export const constants = {
   IS_DEVELOPMENT,
   IS_PRODUCTION,
   BACKEND_URL: IS_DEVELOPMENT
-    ? "http://192.168.201.14:5000/"
+    ? "http://192.168.43.48:5000/"
     : "https://api.eatrofoods.com/",
 
   mqttTopicString: (
